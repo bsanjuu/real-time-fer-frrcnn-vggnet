@@ -3,6 +3,7 @@ from utils.preprocess import load_fer2013
 from utils.metrics import evaluate_model
 import config
 import pandas as pd
+import numpy as np
 model = load_model(config.MODEL_NAME)
 _, X_test, _, y_test = load_fer2013()
 

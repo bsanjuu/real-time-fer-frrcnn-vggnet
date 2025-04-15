@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FER Flask App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Facial Expression Recognition</h1>
+
+    <!-- Upload and predict -->
+    <form method="POST" enctype="multipart/form-data">
+      <input type="file" name="image" required>
+      <button type="submit">Upload & Predict</button>
+    </form>
+
+    {% if prediction %}
+      <div class="result">
+        <h2>Prediction: {{ prediction }}</h2>
+        <p>Confidence: {{ confidence }}%</p>
+       <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Uploaded Image" width="300">
+      </div>
+    {% endif %}
+
+    <hr>
+
+    <!-- Live video prediction -->
+    <h2>Live Camera Prediction</h2>
+    <img src="{{ url_for('video_feed') }}" width="600">
+
+    <!-- Save screenshot from video -->
+    <form id="saveForm" action="{{ url_for('save_screenshot') }}" method="post" style="margin-top: 10px;">
+      <button type="submit">Save Current Frame</button>
+    </form>
+    <p id="saveMsg"></p>
+  </div>
+
+  <script>
+    document.getElementById("saveForm").addEventListener("submit", function(e) {
+      e.preventDefault(); // Prevent page reload
+
+      fetch("{{ url_for('save_screenshot') }}", {
+        method: "POST"
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("saveMsg").innerText = "✅ " + data.message;
+      })
+      .catch(error => {
+        document.getElementById("saveMsg").innerText = " Failed to save screenshot.";
+        console.error(error);
+      });
+    });
+  </script>
+</body>
+</html>

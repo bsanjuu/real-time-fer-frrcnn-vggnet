@@ -1,83 +1,115 @@
-# Real-Time Facial Expression Recognition using Optimized FRR-CNN with VGGNet Transfer Learning
+#  Real-Time Facial Expression Recognition (FER) using FRR-CNN + VGGNet + Flask
 
-This project implements a real-time facial expression recognition (FER) system using an optimized FRR-CNN architecture enhanced with transfer learning from VGGNet. It classifies facial expressions into 7 categories and supports live webcam detection, screenshot saving per emotion, and evaluation on FER-2013 and external datasets like CK+ and JAFFE.
-
----
-
-## 🔧 Features
-
-- Real-time emotion detection via webcam
-- Optimized FRR-CNN architecture + VGGNet transfer learning
-- Screenshot saving per predicted emotion
-- Evaluation on FER-2013 and external datasets
-- Training plots for accuracy and loss
-- Organized codebase with modular structure
+This project implements a real-time **Facial Expression Recognition** system using an optimized **FRR-CNN** model with **VGGNet transfer learning** and wraps it in a Flask web application. It supports both image uploads and live webcam streaming for emotion detection.
 
 ---
 
-## 🧠 Emotion Classes
+##  Features
 
-- Angry
-- Disgust
-- Fear
-- Happy
-- Sad
-- Surprise
-- Neutral
+- ️ Upload image and get prediction via web UI
+-  Real-time emotion recognition via webcam stream
+-  FRR-CNN + VGGNet Transfer Learning for improved accuracy
+- ️ Screenshots saved per predicted emotion (in `/screenshots/<emotion>/`)
+-  Model training, evaluation, and result visualization
+-  Tested on FER-2013 and external datasets like CK+, JAFFE
 
 ---
 
-## 📁 Project Structure
+## Emotion Classes
+
+- Angry  
+- Disgust  
+- Fear  
+- Happy  
+- Sad  
+- Surprise  
+- Neutral  
+
+---
+
+## Project Structure
 
 ```
-fer_frr_cnn_project/
-├── config.py                  # Hyperparameter configuration
-├── train.py                   # Train the model
-├── evaluate.py                # Evaluate on FER-2013 test data
-├── inference.py               # Real-time webcam prediction
-├── test_on_ck_jafee.py        # External dataset testing (CK+/JAFFE)
-├── frr_cnn_model.h5           # Trained model file
-├── ck_jafee_results.csv       # Output from CK+/JAFFE test
-├── requirements.txt           # Required packages
-├── models/
-│   └── frr_cnn.py             # FRR-CNN + VGGNet model
-├── utils/
-│   ├── preprocess.py          # Data loading and preprocessing
-│   └── metrics.py             # Evaluation utilities
-├── data/
-│   └── fer2013.csv            # FER-2013 dataset (CSV format)
+real-time-fer-frrcnn-vggnet/
+├── app.py                     # Flask app entry point
+├── config.py                  # Model and hyperparameter configs
+├── train.py                   # Training pipeline
+├── evaluate.py                # FER-2013 test evaluation
+├── inference.py               # Standalone real-time video prediction
+├── test_on_ck_jafee.py        # CK+ / JAFFE dataset evaluation
+├── frr_cnn_model.h5           # Trained model
+├── templates/
+│   └── index.html             # Web UI
+├── static/
+│   └── style.css              # UI styling
+├── uploads/                   # Uploaded image storage
 ├── screenshots/
-│   └── angry/                 # Screenshots saved by predicted emotion
+│   └── <emotion>/            # Screenshots categorized by prediction
+├── models/
+│   └── frr_cnn.py             # Model architecture
+├── utils/
+│   ├── preprocess.py          # Preprocessing and loader
+│   ├── metrics.py             # Evaluation metrics
+│   └── inference_utils.py     # Webcam feed and screenshot saving
+├── data/
+│   └── fer2013.csv            # FER-2013 dataset
+├── requirements.txt           # Required packages
 ```
 
 ---
 
-##  How to Run
+## How to Run
 
-### 1. Install dependencies
+### 1.  Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Train the model
+---
+
+### 2. Train the Model
+
 ```bash
 python train.py
 ```
 
-### 3. Evaluate on FER-2013 test set
+---
+
+### 3.  Evaluate on FER-2013
+
 ```bash
 python evaluate.py
 ```
 
-### 4. Run real-time webcam FER
-```bash
-python inference.py
-```
-- Press `s` to save a screenshot to `screenshots/<emotion>/`
-- Press `q` to quit
+---
 
-### 5. Test on CK+ or JAFFE Dataset
-Ensure `data/test_ck_jafee/` is structured with subfolders like `angry/`, `happy/`, etc. Then:
+### 4.  Run Flask Web App (Image Upload + Webcam + Screenshot)
+
+```bash
+python app.py
+```
+
+- Visit: `http://127.0.0.1:5000`
+- Upload image or use webcam stream
+- Click "Save Screenshot" to capture current webcam frame
+- Screenshot will be saved inside: `/screenshots/<predicted_emotion>/`
+
+---
+
+### 5.  Test on CK+/JAFFE
+
+Structure your folder as:
+
+```
+data/test_ck_jafee/
+├── angry/
+├── happy/
+├── ...
+```
+
+Then run:
+
 ```bash
 python test_on_ck_jafee.py
 ```
@@ -86,15 +118,18 @@ python test_on_ck_jafee.py
 
 ##  Outputs
 
-- `frr_cnn_model.h5` — Trained model file
-- `ck_jafee_results.csv` — Prediction results on external dataset
-- `screenshots/<emotion>/` — Real-time prediction screenshots
+- `frr_cnn_model.h5` — trained model file
+- `ck_jafee_results.csv` — predictions from external datasets
+- `/uploads/` — uploaded images via UI
+- `/screenshots/<emotion>/` — categorized webcam snapshots
 
 ---
 
-##  Dataset Links
+##  Datasets Used
 
 - [FER-2013 (Kaggle)](https://www.kaggle.com/datasets/msambare/fer2013)
-- [CK+ Dataset (manual request)](https://www.jeffcohn.net/resources/)
+- [CK+ Dataset](https://www.jeffcohn.net/resources/) (requires request)
 - [JAFFE Dataset](http://www.kasrl.org/jaffe_download.html)
+
+---
 
